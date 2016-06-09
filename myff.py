@@ -33,4 +33,13 @@ f2()
 f2(np.uint8)
 f2(np.short)
 
+@np.vectorize
+def f3(i, j):
+	return (np.fromstring(i, np.uint8) != np.fromstring(j, np.uint8)).mean()
 	
+def f4():
+	t = time()	
+	f3(*np.meshgrid(l1, l2, sparse=True))
+	print "vect:", time()-t
+
+f4()	# is actually slower than f2
