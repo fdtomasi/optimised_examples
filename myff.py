@@ -9,18 +9,21 @@ Usage:
 import numpy as np
 from time import time
 
-n = 1000
-l1 = ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS']*n
-l2 = ['AAAAAAAAAAAAAffffffffffffffAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS']*n
-
-def f():
+def f0(l1,l2):
+    """Version 1: two loops over the two lists.
+    Each string in lists is converted to a list, then it is computed the
+    Hamming distance between the single chars.
+    """
     t = time()
     for i in l1:
         for j in l2:
             (np.array(list(i)) != np.array(list(j))).mean()
     print "Converting to list then array:", time()-t
 
-def f2(ntype=np.int8):
+def f1(l1, l2, ntype=np.int8):
+    """Version 2: two loops over the two lists.
+    Now each string in the lists is converted into a numpy array
+    with the np.fromstring function, with type ntype."""
     t = time()
     for i in l1:
         for j in l2:
@@ -28,17 +31,21 @@ def f2(ntype=np.int8):
     print ntype, ":", time()-t
 
 
-f()
-f2()
-f2(np.uint8)
-
 @np.vectorize
-def _f3(i, j):
+def _f2(i, j):
     return (np.fromstring(i, np.uint8) != np.fromstring(j, np.uint8)).mean()
 	
-def f3():
+def f2(l1, l2):
     t = time()	
-    _f3(*np.meshgrid(l1, l2, sparse=True))
+    _f2(*np.meshgrid(l1, l2, sparse=True))
     print "vect:", time()-t
 
-f4()	# is actually slower than f2
+
+if __name__ == '__main__':
+    n = 1000
+    l1 = ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS']*n
+    l2 = ['AAAAAAAAAAAAAffffffffffffffAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS']*n
+    f0(l1,l2)
+    f1(l1,l2)
+    f1(l1,l2,np.uint8)
+    f2(l1,l2)	# is actually slower than f1
