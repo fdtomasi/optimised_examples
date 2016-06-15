@@ -16,16 +16,16 @@ l2 = ['AAAAAAAAAAAAAffffffffffffffAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS
 def f():
     t = time()
     for i in l1:
-	    for j in l2:
+        for j in l2:
             (np.array(list(i)) != np.array(list(j))).mean()
-	print "Converting to list then array:", time()-t
+    print "Converting to list then array:", time()-t
 
 def f2(ntype=np.int8):
-	t = time()
-	for i in l1:
-		for j in l2:
-			(np.fromstring(i, ntype) != np.fromstring(j, ntype)).mean()
-	print ntype, ":", time()-t
+    t = time()
+    for i in l1:
+        for j in l2:
+            (np.fromstring(i, ntype) != np.fromstring(j, ntype)).mean()
+    print ntype, ":", time()-t
 
 
 f()
@@ -34,11 +34,11 @@ f2(np.uint8)
 
 @np.vectorize
 def _f3(i, j):
-	return (np.fromstring(i, np.uint8) != np.fromstring(j, np.uint8)).mean()
+    return (np.fromstring(i, np.uint8) != np.fromstring(j, np.uint8)).mean()
 	
 def f3():
-	t = time()	
-	_f3(*np.meshgrid(l1, l2, sparse=True))
-	print "vect:", time()-t
+    t = time()	
+    _f3(*np.meshgrid(l1, l2, sparse=True))
+    print "vect:", time()-t
 
 f4()	# is actually slower than f2
