@@ -14,9 +14,9 @@ l1 = ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS
 l2 = ['AAAAAAAAAAAAAffffffffffffffAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHBBBBS']*n
 
 def f():
-	t = time()
-	for i in l1:
-		for j in l2:
+    t = time()
+    for i in l1:
+	    for j in l2:
             (np.array(list(i)) != np.array(list(j))).mean()
 	print "Converting to list then array:", time()-t
 
